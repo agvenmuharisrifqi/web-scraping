@@ -22,23 +22,30 @@ browser.get('https://www.tokopedia.com/')
 
 sleep(2)
 search_bar = browser.find_element(By.CLASS_NAME, 'e110g5pc0')
-search_bar.send_keys('wifi repeater' + Keys.ENTER)
+search_bar.send_keys('xiaomi poco 3' + Keys.ENTER)
 
 # Scroll Page
-i = 350
+wait = WebDriverWait(browser, 3)
 soup = []
-while True:
-    sleep(0.25)
-    browser.execute_script("window.scrollTo(0, " + str(i) + ");")
-    new_height = browser.execute_script("return document.body.scrollHeight")
-    i += 350
-    if (i > new_height):
-        soup = BeautifulSoup(browser.page_source, 'lxml')
-        break
-
+for i in range(10):
+    wait.until(EC.visibility_of_element_located((By.CLASS_NAME, 'css-12sieg3')))
+    height = 0
+    soup = []
+    while True:
+        sleep(0.5)
+        browser.execute_script("window.scrollTo(0, " + str(height) + ");")
+        window_height = browser.execute_script("return document.body.scrollHeight")
+        height += 350
+        if (height > window_height):
+            sleep(2)
+            wait.until(EC.presence_of_element_located((By.XPATH, '//button[@aria-label="Laman berikutnya"][@class="css-1eamy6l-unf-pagination-item"]')))
+            next = browser.find_element(By.XPATH, '//button[@aria-label="Laman berikutnya"][@class="css-1eamy6l-unf-pagination-item"]')
+            next.click()
+            soup = BeautifulSoup(browser.page_source, 'lxml')
+            # file = open('tokopedia.html', 'w')
+            # file.write(soup.prettify())
+            break
 
 # Create File From Scrapped Data
-file = open('tokopedia.html', 'w')
-file.write(soup.prettify())
 
-browser.close()
+# browser.close()
