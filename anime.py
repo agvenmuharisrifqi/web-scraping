@@ -18,7 +18,7 @@ def main():
     browser = webdriver.Chrome('chromedriver_linux64/chromedriver', chrome_options=options)
 
     data = []
-    for i in range(1, 3):
+    for i in range(1, 11):
         browser.get('https://animasu.club/pencarian/?urutan=abjad&halaman=%s' % (str(i)))
         sleep(2)
         height = 0
